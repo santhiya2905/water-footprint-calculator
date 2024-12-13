@@ -3,147 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Footprint Prediction</title>
+    <title>Water Footprint Calculator</title>
     <style>
-        /* Basic styling for buttons and inputs */
-        #result, #suggestions {
-            margin-top: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        canvas {
-            display: none;
-        }
-
-        button, input {
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background-color: #DDA0DD; /* Light purple */
-            color: white;
-        }
-
-        /* Add background image */
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-image: url('https://images.unsplash.com/photo-1618714418503-fab6e24f85ee?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGluayUyMGxhbmRzY2FwZXxlbnwwfHwwfHx8MA%3D%3D');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: rgba(249, 241, 249, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            max-width: 300px;
-            background-color: #F0E0F0;
-            color: #8A2BE2;
-            border: 1px solid #8A2BE2;
-        }
-
-        button {
-            background-color: #DA70D6;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #BA55D3;
-            transform: scale(1.05);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        button {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        button, input {
-            width: 100%;
-            max-width: 300px;
-        }
-
-        /* Highlight result in a box */
-        #output {
-            color: #8A2BE2;
-            border: 2px solid #BA55D3;
-            background-color: #F0E0F0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        p, ul {
-            color: #8A2BE2;
-        }
-
-        /* Camera Capture styling */
-        .camera-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .camera-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #video {
-            width: 300px;
-            height: auto;
-        }
-
-        #canvas {
-            display: none;
-            width: 300px;
-            height: auto;
-        }
-
-        .controls {
-            margin-top: 10px;
-        }
+        /* Same CSS as before for styling */
+        /* Add any custom styles you want here */
     </style>
 </head>
 <body>
@@ -174,21 +37,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script>
-        let model;
-
-        // Dummy function to load the TensorFlow model (optional for this task)
-        async function loadModel() {
-            console.log('Model loaded successfully (fake model).');
-        }
-        loadModel();
-
-        async function predictProduct(image) {
-            console.log('Fake prediction: always returning Tomato');
-            return "Tomato";
-        }
-
+        // Handle image upload
         document.getElementById('upload-btn').addEventListener('click', () => {
             document.getElementById('image-upload').click();
         });
@@ -199,8 +49,8 @@
                 const image = new Image();
                 image.src = URL.createObjectURL(file);
                 image.onload = async () => {
-                    const productName = await predictProduct(image);
-                    findWaterFootprint(productName);
+                    const footprintInfo = await getWaterFootprint(image);
+                    displayResult(footprintInfo);
                 };
             } else {
                 alert("Please upload a valid image.");
@@ -222,7 +72,7 @@
             });
 
         // Capture image from video and display on canvas
-        captureButton.addEventListener('click', () => {
+        captureButton.addEventListener('click', async () => {
             const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -232,40 +82,53 @@
             const image = new Image();
             image.src = imageData;
             image.onload = async () => {
-                const productName = await predictProduct(image);
-                findWaterFootprint(productName);
+                const footprintInfo = await getWaterFootprint(image);
+                displayResult(footprintInfo);
             };
         });
 
-        document.getElementById('calculate-btn').addEventListener('click', () => {
+        // Handle text input for product name
+        document.getElementById('calculate-btn').addEventListener('click', async () => {
             const productName = document.getElementById('product-name').value.trim();
             if (productName === "") {
                 alert("Please enter a valid product name.");
             } else {
-                findWaterFootprint(productName);
+                const footprintInfo = await getWaterFootprintByName(productName);
+                displayResult(footprintInfo);
             }
         });
 
-        const waterFootprints = [
-            { product: "Rice", footprint: 2500 },
-            { product: "Wheat", footprint: 1800 },
-            { product: "Potatoes", footprint: 500 },
-            { product: "Tomatoes", footprint: 200, alternative: "Plum Tomato", alternativeFootprint: 180 },
-            { product: "Bananas", footprint: 560 },
-            { product: "Corn", footprint: 1000 }
-        ];
+        // Fetch the water footprint info from the backend (image-based)
+        async function getWaterFootprint(image) {
+            const formData = new FormData();
+            formData.append("image", image);
 
-        function findWaterFootprint(productName) {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            return data;
+        }
+
+        // Fetch the water footprint info from the backend (text-based)
+        async function getWaterFootprintByName(productName) {
+            const response = await fetch(`/getFootprint?product=${productName}`);
+            const data = await response.json();
+            return data;
+        }
+
+        // Display the result in the UI
+        function displayResult(footprintInfo) {
             const resultDiv = document.getElementById("result");
             const output = document.getElementById("output");
             const suggestionsDiv = document.getElementById("suggestions");
 
-            const product = waterFootprints.find(p => p.product.toLowerCase() === "tomatoes");
-
-            if (product) {
-                output.textContent = `The water footprint for ${product.product} is ${product.footprint} liters.`;
-                if (product.alternative) {
-                    suggestionsDiv.textContent = `Consider using ${product.alternative} with a footprint of ${product.alternativeFootprint} liters.`;
+            if (footprintInfo) {
+                output.textContent = `The water footprint for ${footprintInfo.product} is ${footprintInfo.footprint}.`;
+                if (footprintInfo.alternative) {
+                    suggestionsDiv.textContent = `Consider using ${footprintInfo.alternative} with a footprint of ${footprintInfo.alternativeFootprint}.`;
                     suggestionsDiv.classList.remove('hidden');
                 } else {
                     suggestionsDiv.classList.add('hidden');
