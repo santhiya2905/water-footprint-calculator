@@ -1,7 +1,10 @@
+from flask import Flask, request, jsonify
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image
+
+app = Flask(__name__)
 
 # Load the pre-trained model
 model = load_model('my_model.h5')
@@ -38,13 +41,31 @@ def preprocess_image(img):
     return img
 
 # Function to predict the image class and get water footprint data
-def predict_class(img):
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image file found'}), 400
+
+    img_file = request.files['image']
+    img = Image.open(img_file.stream)
     img_preprocessed = preprocess_image(img)
+
     prediction = model.predict(img_preprocessed)
     predicted_class_index = np.argmax(prediction, axis=1)
     predicted_class = class_names[predicted_class_index[0]]
-    footprint_info = water_footprint_data[predicted_class]
-    return predicted_class, footprint_info
+    footprint_info = water_footprint_data.get(predicted_class,{})
+
+    return jsonify(footprint_info)
+
+# Fetch water footprint info by product name
+@app.route('/getFootprint', methods=['GET'])
+def get_footprint():
+    product_name = request.args.get('product')
+    footprint_info = water_footprint_data.get(product_name.capitalize(), {})
+    return jsonify(footprint_info)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # Example of usage
 # Assuming you have an image to predict
