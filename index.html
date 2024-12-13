@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueLens</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #66003a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #66003a;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+            position: relative;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:after {
+            content: ' ▼';
+            font-size: 0.8rem;
+        }
+        nav ul li:not(:has(ul)) a:after {
+            content: '';
+        }
+        nav ul li a:hover {
+            background-color: #993366;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            background-color: #66003a;
+            top: 100%;
+            left: 0;
+            padding: 10px;
+            list-style-type: none;
+            z-index: 1000;
+            width: 200px;
+        }
+        nav ul li ul li {
+            margin: 5px 0;
+        }
+        nav ul li ul li a {
+            color: white;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li ul li a:hover {
+            background-color: #993366;
+        }
+        nav ul li:hover > ul {
+            display: block;
+        }
+        nav ul li ul:hover {
+            display: block;
+        }
+        .hero {
+            background: url('https://t3.ftcdn.net/jpg/08/33/91/24/360_F_833912493_ParaZ9RXPWeMr6Z22qw32DOjwH3zNyb7.jpg') no-repeat center center/cover;
+            height: 500px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .buttons a {
+            background-color: #66003a;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            display: inline-block;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .buttons a:hover {
+            background-color: #993366;
+            transform: scale(1.1);
+        }
+        .latest-news {
+            padding: 50px 0;
+            background-color: #e0f7fa;
+            text-align: center;
+        }
+        .latest-news h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .news-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            gap: 20px; /* Add consistent spacing between the boxes */
+        }
+        .news-box {
+            background-color: white;
+            width: 30%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+        }
+        .news-box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .news-box h3 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .news-box p {
+            color: #666;
+        }
+        .news-box a {
+            color: #0073e6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        /* Hover effect for news-box */
+        .news-box:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+        }
+        footer {
+            background-color: #66003a;
+            color: white;
+            padding: 50px 20px;
+        }
+        footer .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        footer .footer-section {
+            flex: 1;
+            padding: 10px 20px;
+        }
+        footer .footer-section h4 {
+            margin-bottom: 15px;
+        }
+        footer .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        footer .footer-section ul li {
+            margin: 5px 0;
+        }
+        footer .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .social-icons img {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i>BlueLens</i></h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">About Us</a>
+                <ul>
+                    <li><a href="#">Aims & History</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Donate</a></li>
+                </ul>
+            </li>
+            <li><a href="#">The Network</a>
+                <ul>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Profession</a></li>
+                    <li><a href="#">Join the Network</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Water Footprint</a>
+                <ul>
+                    <li><a href="#">What is a Water Footprint?</a></li>
+                    <li><a href="#">Water Footprint Assessment</a></li>
+                    <li><a href="#">Glossary</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </li>
+            <li><a href="water_technique.html">Water Efficient Techniques</a>
+            <li><a href="#">Resources</a>
+                <ul>
+                    <li><a href="#">Interactive Tools</a></li>
+                    <li><a href="#">WaterPub</a></li>
+                    <li><a href="#">Multimedia Hub</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Time For Action</a>
+                <ul>
+                    <li><a href="#">What can consumers do?</a></li>
+                    <li><a href="#">What can companies do?</a></li>
+                    <li><a href="#">What can governments do?</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to the Water Footprint Network</h1>
+        <p>Join us in our mission to improve water management worldwide.</p>
+        <div class="buttons">
+            <a href="joinus.html">Join Us</a>
+            <a href="donate.html">Donate</a>
+            <a href="waterfoot_calc.html">Water Footprint Calculator</a>
+        </div>
+    </div>
+
+    <section class="latest-news">
+        <h2>Latest News</h2>
+        <div class="news-container">
+            <div class="news-box">
+                <img src="http://icid-ciid.org/uploads/pages/1614232527_wef-nexus-image.jpg" alt="News Image 1">
+                <h3>Water-Energy-Food Nexus Symposium 2023</h3>
+                <p>The Water-Energy-Food Nexus Symposium was held virtually, bringing together experts from 45+ countries.</p>
+                <a href="#">Read more</a>
+            </div>
+            <div class="news-box">
+                <img src="https://img.indiafilings.com/learn/wp-content/uploads/2019/06/12004348/National-Action-Plan-on-Climate-Change.jpg" alt="News Image 2">
+                <h3>Water Conservation Efforts Worldwide</h3>
+                <p>Learn more about our efforts to promote sustainable water use as part of broader climate action efforts.</p>
+                <a href="#">Read more</a>
+            </div>
+            <div class="news-box">
+                <img src="https://i.vimeocdn.com/video/1844777024-03351b4eb7fbad6482ff6e28133c5a895fe544c55681f69ac60782556cb9ab4d-d_640?f=webp" alt="News Image 3">
+                <h3>International Water Summit 2024</h3>
+                <p>Preparations are underway for the International Water Summit, focusing on innovative solutions.</p>
+                <a href="#">Read more</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="#">Aims & History</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>The Network</h4>
+                <ul>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Profession</a></li>
+                    <li><a href="#">Join the Network</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Water Footprint</h4>
+                <ul>
+                    <li><a href="#">What is a Water Footprint?</a></li>
+                    <li><a href="#">Water Footprint Assessment</a></li>
+                    <li><a href="#">Glossary</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Interactive Tools</a></li>
+                    <li><a href="#">School Resources</a></li>
+                    <li><a href="#">Multimedia Hub</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

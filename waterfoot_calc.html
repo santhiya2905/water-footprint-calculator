@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Footprint Prediction</title>
+    <style>
+        /* Basic styling for buttons and inputs */
+        #result, #suggestions {
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        button, input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #DDA0DD; /* Light purple */
+            color: white;
+        }
+
+        /* Add background image */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1618714418503-fab6e24f85ee?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGluayUyMGxhbmRzY2FwZXxlbnwwfHwwfHx8MA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: rgba(249, 241, 249, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            background-color: #F0E0F0;
+            color: #8A2BE2;
+            border: 1px solid #8A2BE2;
+        }
+
+        button {
+            background-color: #DA70D6;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #BA55D3;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        button, input {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Highlight result in a box */
+        #output {
+            color: #8A2BE2;
+            border: 2px solid #BA55D3;
+            background-color: #F0E0F0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        p, ul {
+            color: #8A2BE2;
+        }
+
+        /* Camera Capture styling */
+        .camera-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .camera-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #video {
+            width: 300px;
+            height: auto;
+        }
+
+        #canvas {
+            display: none;
+            width: 300px;
+            height: auto;
+        }
+
+        .controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: darkmagenta; font-style: italic; text-align: center;">Water Footprint Calculator</h1>
+        <input type="text" id="product-name" placeholder="Enter product name" />
+        <button id="upload-btn">Upload Image</button>
+        <input type="file" id="image-upload" class="hidden" accept="image/*">
+
+        <!-- Camera Capture functionality -->
+        <div class="camera-wrapper">
+            <div class="camera-container">
+                <video id="video" autoplay></video>
+                <canvas id="canvas"></canvas>
+                <div class="controls">
+                    <button id="capture">Capture</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speech Recognition button -->
+        <button type="button" id="startSpeechRecognition">Speech Recognition</button>
+
+        <button id="calculate-btn">Calculate Water Footprint</button>
+        <div id="result" class="hidden">
+            <p id="output"></p>
+            <div id="suggestions" class="hidden"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script>
+        let model;
+
+        // Dummy function to load the TensorFlow model (optional for this task)
+        async function loadModel() {
+            console.log('Model loaded successfully (fake model).');
+        }
+        loadModel();
+
+        async function predictProduct(image) {
+            console.log('Fake prediction: always returning Tomato');
+            return "Tomato";
+        }
+
+        document.getElementById('upload-btn').addEventListener('click', () => {
+            document.getElementById('image-upload').click();
+        });
+
+        document.getElementById('image-upload').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const image = new Image();
+                image.src = URL.createObjectURL(file);
+                image.onload = async () => {
+                    const productName = await predictProduct(image);
+                    findWaterFootprint(productName);
+                };
+            } else {
+                alert("Please upload a valid image.");
+            }
+        });
+
+        // Camera Capture functionality
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture');
+
+        // Request camera access and stream video
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                alert("Camera access denied or unavailable.");
+            });
+
+        // Capture image from video and display on canvas
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/png');
+
+            const image = new Image();
+            image.src = imageData;
+            image.onload = async () => {
+                const productName = await predictProduct(image);
+                findWaterFootprint(productName);
+            };
+        });
+
+        document.getElementById('calculate-btn').addEventListener('click', () => {
+            const productName = document.getElementById('product-name').value.trim();
+            if (productName === "") {
+                alert("Please enter a valid product name.");
+            } else {
+                findWaterFootprint(productName);
+            }
+        });
+
+        const waterFootprints = [
+            { product: "Rice", footprint: 2500 },
+            { product: "Wheat", footprint: 1800 },
+            { product: "Potatoes", footprint: 500 },
+            { product: "Tomatoes", footprint: 200, alternative: "Plum Tomato", alternativeFootprint: 180 },
+            { product: "Bananas", footprint: 560 },
+            { product: "Corn", footprint: 1000 }
+        ];
+
+        function findWaterFootprint(productName) {
+            const resultDiv = document.getElementById("result");
+            const output = document.getElementById("output");
+            const suggestionsDiv = document.getElementById("suggestions");
+
+            const product = waterFootprints.find(p => p.product.toLowerCase() === "tomatoes");
+
+            if (product) {
+                output.textContent = `The water footprint for ${product.product} is ${product.footprint} liters.`;
+                if (product.alternative) {
+                    suggestionsDiv.textContent = `Consider using ${product.alternative} with a footprint of ${product.alternativeFootprint} liters.`;
+                    suggestionsDiv.classList.remove('hidden');
+                } else {
+                    suggestionsDiv.classList.add('hidden');
+                }
+                resultDiv.classList.remove("hidden");
+            } else {
+                output.textContent = "Product not found.";
+                suggestionsDiv.classList.add('hidden');
+                resultDiv.classList.remove("hidden");
+            }
+        }
+
+        // Speech recognition functionality
+        document.getElementById("startSpeechRecognition").addEventListener("click", function () {
+            var recognition = new webkitSpeechRecognition();
+            recognition.lang = "en-US";
+            recognition.onresult = function (event) {
+                document.getElementById("product-name").value = event.results[0][0].transcript;
+            };
+            recognition.start();
+        });
+    </script>
+</body>
+</html>

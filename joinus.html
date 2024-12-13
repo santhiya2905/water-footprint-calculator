@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Footprint Calculator - Join as Volunteer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, purple, magenta, violet, pink);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-container {
+      background-color: white;
+      max-width: 500px;
+      width: 100%;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+      height: 80vh; /* Ensure the form takes 80% of screen height */
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-container label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .form-container input, .form-container select, .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: magenta;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: purple;
+    }
+
+    .robot-check {
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .form-container {
+        max-width: 90%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Join Us as a Volunteer</h2>
+    <form id="volunteerForm">
+      <label for="firstName">First Name *</label>
+      <input type="text" id="firstName" name="firstName" required>
+
+      <label for="lastName">Last Name *</label>
+      <input type="text" id="lastName" name="lastName" required>
+
+      <label for="email">Business Email Address *</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone *</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="organization">Organization</label>
+      <input type="text" id="organization" name="organization">
+
+      <label for="country">Country *</label>
+      <select id="country" name="country" required>
+        <option value="">Select</option>
+        <option value="US">United States</option>
+        <option value="IN">India</option>
+        <!-- Add more countries here -->
+      </select>
+
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" rows="4" required></textarea>
+
+      <label for="hearAbout">How did you hear about us? *</label>
+      <input type="text" id="hearAbout" name="hearAbout" required>
+
+      <label>
+        <input type="checkbox" required> I accept the Website terms of use and acknowledge the Privacy policy.
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // JavaScript to handle form submission (if needed)
+    document.getElementById('volunteerForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      alert('Form submitted successfully!');
+      // Add your form submission logic here (e.g., send data to the server)
+    });
+  </script>
+
+</body>
+</html>
