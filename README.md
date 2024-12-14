@@ -2,8 +2,6 @@
 
 Water Footprint Calculator: A digital tool that calculates the water footprint of agricultural products using AI and Big Data. It provides insights into water usage, helping users make informed, sustainable decisions for farming and water conservation. Feel free to contribute to enhance this project! 🌱
 
----
-
 ## Description
 
 - A user-friendly web application designed to calculate the water footprints of various agricultural products.
@@ -12,11 +10,8 @@ Water Footprint Calculator: A digital tool that calculates the water footprint o
 - Aims to promote water conservation by creating awareness about the environmental impact of daily choices.
 - Designed with an intuitive UI/UX for seamless user experience and easy accessibility.
 
----
-
 ## Demo Video
 
----
 
 ## Features
 
@@ -25,8 +20,6 @@ Water Footprint Calculator: A digital tool that calculates the water footprint o
 - **AI-Powered Calculations:** Uses predictive modeling to provide accurate water usage statistics.
 - **User Dashboard:** View and track previously searched products and water consumption.
 - **Interactive Visuals:** Includes graphs and charts for better data interpretation.
-
----
 
 ## Tech Stack
 
