@@ -12,6 +12,7 @@ Water Footprint Calculator: A digital tool that calculates the water footprint o
 
 ## Demo Video
 
+https://github.com/user-attachments/assets/3fc6d106-681f-46bb-b534-0700bfec6c47
 
 ## Features
 
